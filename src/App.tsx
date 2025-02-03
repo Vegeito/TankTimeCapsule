@@ -4,6 +4,7 @@ import { Navbar } from './components/Navbar';
 import { Sidebar } from './components/Sidebar';
 import { Dashboard } from './pages/Dashboard';
 import { Auth } from './pages/Auth';
+import { Profile } from './pages/Profile';
 import { useThemeStore } from './store/useThemeStore';
 import { useDealsStore } from './store/useDealsStore';
 import { useAuthStore } from './store/useAuthStore';
@@ -11,14 +12,16 @@ import { useAuthStore } from './store/useAuthStore';
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const { isDarkMode } = useThemeStore();
-  const { fetchDeals, fetchSharks } = useDealsStore();
+  const { fetchDeals, fetchSharks, fetchPredictions, fetchInsights } = useDealsStore();
   const { fetchProfile } = useAuthStore();
 
   useEffect(() => {
     fetchDeals();
     fetchSharks();
+    fetchPredictions();
+    fetchInsights();
     fetchProfile();
-  }, [fetchDeals, fetchSharks, fetchProfile]);
+  }, [fetchDeals, fetchSharks, fetchPredictions, fetchInsights, fetchProfile]);
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
@@ -40,7 +43,7 @@ function App() {
               <Route path="/deal-table" element={<div>Deal Table Coming Soon</div>} />
               <Route path="/predictions" element={<div>Predictions Coming Soon</div>} />
               <Route path="/auth" element={<Auth />} />
-              <Route path="/profile" element={<div>Profile Coming Soon</div>} />
+              <Route path="/profile" element={<Profile />} />
               <Route path="/settings" element={<div>Settings Coming Soon</div>} />
             </Routes>
           </div>

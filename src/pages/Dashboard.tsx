@@ -6,10 +6,14 @@ import {
   TrendingUp,
   Table,
   Activity,
-  ArrowRight
+  ArrowRight,
+  Brain
 } from 'lucide-react';
 import { useThemeStore } from '../store/useThemeStore';
 import { SeasonSelector } from '../components/SeasonSelector';
+import { PremiumFeatures } from '../components/PremiumFeatures';
+import { MLInsights } from '../components/MLInsights';
+import { useAuthStore } from '../store/useAuthStore';
 
 const DashboardCard: React.FC<{
   title: string;
@@ -43,6 +47,7 @@ const DashboardCard: React.FC<{
 
 export const Dashboard: React.FC = () => {
   const { isDarkMode } = useThemeStore();
+  const { user } = useAuthStore();
 
   const cards = [
     {
@@ -99,26 +104,34 @@ export const Dashboard: React.FC = () => {
         ))}
       </div>
 
-      <div className="mt-8 p-6 rounded-lg shadow-lg bg-gradient-to-r from-blue-500 to-purple-600">
-        <h2 className="text-2xl font-bold text-white mb-4">
-          Premium Features
-        </h2>
-        <p className="text-white mb-4">
-          Sign up to unlock exclusive features:
-        </p>
-        <ul className="text-white space-y-2 mb-6">
-          <li>• Advanced analytics and predictions</li>
-          <li>• Personalized investment insights</li>
-          <li>• Custom reports and exports</li>
-          <li>• Early access to new features</li>
-        </ul>
-        <Link
-          to="/auth"
-          className="inline-block px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-opacity-90 transition-colors"
-        >
-          Get Started
-        </Link>
-      </div>
+      {/* ML Insights Section */}
+      <MLInsights />
+
+      {/* Premium Features Section */}
+      <PremiumFeatures />
+
+      {!user && (
+        <div className="mt-8 p-6 rounded-lg shadow-lg bg-gradient-to-r from-blue-500 to-purple-600">
+          <h2 className="text-2xl font-bold text-white mb-4">
+            Premium Features
+          </h2>
+          <p className="text-white mb-4">
+            Sign up to unlock exclusive features:
+          </p>
+          <ul className="text-white space-y-2 mb-6">
+            <li>• Advanced analytics and predictions</li>
+            <li>• Personalized investment insights</li>
+            <li>• Custom reports and exports</li>
+            <li>• Early access to new features</li>
+          </ul>
+          <Link
+            to="/auth"
+            className="inline-block px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-opacity-90 transition-colors"
+          >
+            Get Started
+          </Link>
+        </div>
+      )}
     </div>
   );
 };

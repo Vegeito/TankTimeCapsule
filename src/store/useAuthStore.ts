@@ -16,13 +16,13 @@ interface AuthStore {
   loading: boolean;
   error: string | null;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string) => Promise<void>;
+  signUp: (email: string, password: string, fullName: string) => Promise<void>;
   signOut: () => Promise<void>;
   fetchProfile: () => Promise<void>;
   updateProfile: (updates: Partial<Profile>) => Promise<void>;
 }
 
-export const useAuthStore = create<AuthStore>((set) => ({
+export const useAuthStore = create<AuthStore>((set, get) => ({
   user: null,
   profile: null,
   loading: false,
@@ -31,49 +31,79 @@ export const useAuthStore = create<AuthStore>((set) => ({
   signIn: async (email: string, password: string) => {
     set({ loading: true, error: null });
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
       if (error) throw error;
+      
+      if (data.user) {
+        const { data: profile, error: profileError } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', data.user.id)
+          .single();
+          
+        if (profileError) throw profileError;
+        set({ user: data.user, profile, error: null });
+      }
     } catch (error) {
-      set({ error: (error as Error).message });
+      set({ error: (error as Error).message, user: null, profile: null });
+      throw error; // Re-throw to handle in the component
     } finally {
       set({ loading: false });
     }
   },
 
-  signUp: async (email: string, password: string) => {
+  signUp: async (email: string, password: string, fullName: string) => {
     set({ loading: true, error: null });
     try {
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          data: {
+            full_name: fullName,
+          },
+        },
       });
       if (error) throw error;
+      
+      if (data.user) {
+        const { data: profile, error: profileError } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', data.user.id)
+          .single();
+          
+        if (profileError) throw profileError;
+        set({ user: data.user, profile, error: null });
+      }
     } catch (error) {
-      set({ error: (error as Error).message });
+      set({ error: (error as Error).message, user: null, profile: null });
+      throw error;
     } finally {
       set({ loading: false });
     }
   },
 
   signOut: async () => {
-    set({ loading: true, error: null });
     try {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
-      set({ user: null, profile: null });
+      set({ user: null, profile: null, error: null });
     } catch (error) {
       set({ error: (error as Error).message });
-    } finally {
-      set({ loading: false });
+      throw error;
     }
   },
 
   fetchProfile: async () => {
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
+    if (!user) {
+      set({ user: null, profile: null });
+      return;
+    }
 
     try {
       const { data, error } = await supabase
@@ -83,15 +113,19 @@ export const useAuthStore = create<AuthStore>((set) => ({
         .single();
 
       if (error) throw error;
-      set({ user, profile: data });
+      set({ user, profile: data, error: null });
     } catch (error) {
       set({ error: (error as Error).message });
+      throw error;
     }
   },
 
-  updateProfile: async (updates) => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
+  updateProfile: async (updates: Partial<Profile>) => {
+    const { user } = get();
+    if (!user) {
+      set({ error: 'No user logged in' });
+      return;
+    }
 
     try {
       const { error } = await supabase
@@ -100,11 +134,20 @@ export const useAuthStore = create<AuthStore>((set) => ({
         .eq('id', user.id);
 
       if (error) throw error;
-      set((state) => ({
-        profile: state.profile ? { ...state.profile, ...updates } : null
-      }));
+      
+      // Fetch updated profile
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+        
+      if (profileError) throw profileError;
+      
+      set({ profile, error: null });
     } catch (error) {
       set({ error: (error as Error).message });
+      throw error;
     }
   },
 }));
