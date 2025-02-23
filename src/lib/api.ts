@@ -14,7 +14,9 @@ api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('auth_token');
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      if (config.headers) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
     }
     return config;
   },
@@ -35,7 +37,7 @@ api.interceptors.response.use(
       try {
         const refreshToken = localStorage.getItem('refresh_token');
         const response = await api.post('/auth/refresh', { token: refreshToken });
-        const { token } = response.data;
+        const { token } = response.data as { token: string };
         localStorage.setItem('auth_token', token);
         originalRequest.headers.Authorization = `Bearer ${token}`;
         return api(originalRequest);
@@ -55,7 +57,7 @@ export const auth = {
   login: async (email: string, password: string) => {
     try {
       const response = await api.post('/auth/login', { email, password });
-      const { token, refresh_token } = response.data;
+      const { token, refresh_token } = response.data as { token: string; refresh_token: string };
       localStorage.setItem('auth_token', token);
       localStorage.setItem('refresh_token', refresh_token);
       return response.data;
@@ -72,7 +74,7 @@ export const auth = {
         password, 
         full_name: fullName 
       });
-      const { token, refresh_token } = response.data;
+      const { token, refresh_token } = response.data as { token: string; refresh_token: string };
       localStorage.setItem('auth_token', token);
       localStorage.setItem('refresh_token', refresh_token);
       return response.data;
@@ -103,7 +105,7 @@ export const auth = {
     }
   },
 
-  updateProfile: async (updates: any) => {
+  updateProfile: async (updates: { email?: string; password?: string; fullName?: string }) => {
     try {
       const response = await api.put('/auth/profile', updates);
       return response.data;
@@ -115,7 +117,7 @@ export const auth = {
 };
 
 // Data endpoints with error handling and retries
-const withRetry = async (fn: () => Promise<any>, retries = 3) => {
+const withRetry = async <T>(fn: () => Promise<T>, retries = 3): Promise<T> => {
   for (let i = 0; i < retries; i++) {
     try {
       return await fn();
@@ -124,6 +126,7 @@ const withRetry = async (fn: () => Promise<any>, retries = 3) => {
       await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, i)));
     }
   }
+  throw new Error('Function failed after maximum retries');
 };
 
 export const fetchDeals = () => withRetry(async () => {

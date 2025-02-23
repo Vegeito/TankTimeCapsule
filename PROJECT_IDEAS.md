@@ -1,4 +1,4 @@
-# 🚀 Shark Tank India Analytics - Project Ideas
+# 🚀 Tank Time Capsule - Project Ideas
 
 ## 🎯 Core Project Ideas
 

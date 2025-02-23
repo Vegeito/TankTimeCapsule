@@ -4,11 +4,11 @@ import { useDealsStore } from '../store/useDealsStore';
 import { motion } from 'framer-motion';
 import * as THREE from 'three';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Brain, TrendingUp, DollarSign, Users, Target, Award } from 'lucide-react';
+import { Brain, DollarSign, Target, Award } from 'lucide-react';
 
 export const Analytics: React.FC = () => {
   const { isDarkMode } = useThemeStore();
-  const { deals, sharks } = useDealsStore();
+  const { deals } = useDealsStore();
   const containerRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
@@ -73,14 +73,20 @@ export const Analytics: React.FC = () => {
   const avgValuation = deals.reduce((sum, deal) => sum + deal.valuation, 0) / deals.length;
   const successRate = (deals.filter(deal => deal.success_status === 'funded').length / deals.length) * 100;
 
-  const seasonalTrends = deals.reduce((acc: any[], deal) => {
-    const season = acc.find(s => s.season === deal.season);
+  interface SeasonalTrend {
+    season: string;
+    deals: number;
+    investment: number;
+  }
+
+  const seasonalTrends = deals.reduce((acc: SeasonalTrend[], deal) => {
+    const season = acc.find(s => s.season === deal.season.toString());
     if (season) {
       season.deals++;
       season.investment += deal.deal_amount;
     } else {
       acc.push({
-        season: deal.season,
+        season: deal.season.toString(),
         deals: 1,
         investment: deal.deal_amount,
       });

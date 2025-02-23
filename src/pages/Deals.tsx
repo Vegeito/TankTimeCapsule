@@ -12,7 +12,15 @@ export const Deals: React.FC = () => {
   const avgEquity = deals.reduce((acc, deal) => acc + deal.deal_equity, 0) / deals.length;
   const successRate = (deals.filter(deal => deal.success_status === 'funded').length / deals.length) * 100;
 
-  const industryData = deals.reduce((acc: any, deal) => {
+  interface IndustryData {
+    [key: string]: {
+      name: string;
+      count: number;
+      totalValuation: number;
+    };
+  }
+
+  const industryData = deals.reduce((acc: IndustryData, deal) => {
     if (!acc[deal.industry]) {
       acc[deal.industry] = {
         name: deal.industry,
@@ -28,8 +36,14 @@ export const Deals: React.FC = () => {
   const pieData = Object.values(industryData);
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
 
-  const seasonData = deals.reduce((acc: any[], deal) => {
-    const season = acc.find(s => s.season === deal.season);
+  interface SeasonData {
+    season: number;
+    deals: number;
+    totalValuation: number;
+  }
+
+  const seasonData = deals.reduce((acc: SeasonData[], deal) => {
+    const season = acc.find(s => s.season === Number(deal.season));
     if (season) {
       season.deals++;
       season.totalValuation += deal.valuation;
@@ -41,7 +55,7 @@ export const Deals: React.FC = () => {
       });
     }
     return acc;
-  }, []).sort((a, b) => a.season - b.season);
+  }, []).sort((a, b) => Number(a.season) - Number(b.season));
 
   return (
     <div className="space-y-8">
@@ -104,7 +118,7 @@ export const Deals: React.FC = () => {
                 dataKey="count"
                 label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
               >
-                {pieData.map((entry: any, index: number) => (
+                {pieData.map((_, index: number) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Crown, TrendingUp, FileText, Zap, Brain, Target, BarChart3, Award } from 'lucide-react';
+import { Crown, FileText, Zap, Brain, Target, BarChart3, Award } from 'lucide-react';
 import { useAuthStore } from '../store/useAuthStore';
 import { useThemeStore } from '../store/useThemeStore';
 import { Link } from 'react-router-dom';

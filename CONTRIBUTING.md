@@ -1,6 +1,6 @@
-# Contributing to Shark Tank India Analytics
+# Contributing to Tank Time Capsule
 
-We love your input! We want to make contributing to Shark Tank India Analytics as easy and transparent as possible, whether it's:
+We love your input! We want to make contributing to Tank Time Capsule as easy and transparent as possible, whether it's:
 
 - Reporting a bug
 - Discussing the current state of the code

@@ -7,7 +7,6 @@ import {
   Table,
   Activity,
   ArrowRight,
-  Brain
 } from 'lucide-react';
 import { useThemeStore } from '../store/useThemeStore';
 import { SeasonSelector } from '../components/SeasonSelector';

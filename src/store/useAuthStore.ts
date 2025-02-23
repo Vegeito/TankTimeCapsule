@@ -6,11 +6,11 @@ interface Profile {
   email: string;
   full_name: string | null;
   avatar_url: string | null;
-  preferences: Record<string, any>;
+  preferences: Record<string, unknown>;
 }
 
 interface AuthStore {
-  user: any | null;
+  user: { id: string; email: string } | null;
   profile: Profile | null;
   loading: boolean;
   error: string | null;

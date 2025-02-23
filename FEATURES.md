@@ -1,6 +1,6 @@
 # 🚀 Feature Roadmap & Opportunities
 
-This document outlines current features and future opportunities for contributors to the Shark Tank India Analytics platform.
+This document outlines current features and future opportunities for contributors to the Tank Time Capsule platform.
 
 ## 🎯 Current Features
 

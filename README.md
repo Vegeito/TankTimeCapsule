@@ -1,8 +1,8 @@
-# 🦈 Shark Tank India Analytics
+# 🦈 Tank Time Capsule
 
 A comprehensive analytics platform for Shark Tank India, providing insights, predictions, and analysis of deals, sharks, and startups.
 
-![Shark Tank India Analytics](https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&h=400)
+![Tank Time Capsule](https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&h=400)
 
 ## 🚀 Features
 

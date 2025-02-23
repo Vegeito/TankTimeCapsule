@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuthStore } from '../store/useAuthStore';
 import { useThemeStore } from '../store/useThemeStore';
-import { User, Mail, Settings, History, Star, Bell } from 'lucide-react';
+import { Settings, History, Star, Bell } from 'lucide-react';
 
 export const Profile: React.FC = () => {
   const { user, profile, updateProfile } = useAuthStore();

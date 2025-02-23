@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useThemeStore } from '../store/useThemeStore';
 import { useDealsStore } from '../store/useDealsStore';
 import { motion } from 'framer-motion';
-import { Search, Filter, Download, ArrowUpDown, Eye } from 'lucide-react';
+import { Search, Download, ArrowUpDown, Eye } from 'lucide-react';
 
 export const DealTable: React.FC = () => {
   const { isDarkMode } = useThemeStore();
@@ -46,6 +46,9 @@ export const DealTable: React.FC = () => {
   // Get unique values for filters
   const industries = [...new Set(deals.map(deal => deal.industry))];
   const seasons = [...new Set(deals.map(deal => deal.season))];
+
+  
+
 
   const handleSort = (key: string) => {
     setSortConfig(prev => ({

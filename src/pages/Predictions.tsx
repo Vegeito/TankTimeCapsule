@@ -17,7 +17,16 @@ export const Predictions: React.FC = () => {
     'Manufacturing',
   ];
 
-  const predictions = {
+  type Prediction = {
+    success_rate: number;
+    growth_potential: number;
+    market_size: string;
+    top_sharks: string[];
+    risk_factors: string[];
+    valuation_range: string;
+  };
+
+  const predictions: Record<string, Prediction> = React.useMemo(() => ({
     Technology: {
       success_rate: 75,
       growth_potential: 85,
@@ -66,7 +75,7 @@ export const Predictions: React.FC = () => {
       risk_factors: ['Raw Material Costs', 'Production Scale', 'Supply Chain'],
       valuation_range: '₹2.5Cr - ₹9Cr',
     },
-  };
+  }), []);
 
   useEffect(() => {
     const targetPercentage = predictions[selectedIndustry].success_rate;
@@ -84,7 +93,7 @@ export const Predictions: React.FC = () => {
     }, 16);
 
     return () => clearInterval(timer);
-  }, [selectedIndustry]);
+  }, [selectedIndustry, predictions]);
 
   return (
     <div className="space-y-8">
