@@ -3,6 +3,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Sidebar } from './components/Sidebar';
 import { Dashboard } from './pages/Dashboard';
+import { Sharks } from './pages/Sharks';
+import { Deals } from './pages/Deals';
+import { Analytics } from './pages/Analytics';
+import { DealTable } from './pages/DealTable';
+import { Predictions } from './pages/Predictions';
 import { Auth } from './pages/Auth';
 import { Profile } from './pages/Profile';
 import { useThemeStore } from './store/useThemeStore';
@@ -37,11 +42,11 @@ function App() {
           <div className="p-6">
             <Routes>
               <Route path="/" element={<Dashboard />} />
-              <Route path="/sharks" element={<div>Sharks Coming Soon</div>} />
-              <Route path="/deals" element={<div>Deals Coming Soon</div>} />
-              <Route path="/analytics" element={<div>Analytics Coming Soon</div>} />
-              <Route path="/deal-table" element={<div>Deal Table Coming Soon</div>} />
-              <Route path="/predictions" element={<div>Predictions Coming Soon</div>} />
+              <Route path="/sharks" element={<Sharks />} />
+              <Route path="/deals" element={<Deals />} />
+              <Route path="/analytics" element={<Analytics />} />
+              <Route path="/deal-table" element={<DealTable />} />
+              <Route path="/predictions" element={<Predictions />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/settings" element={<div>Settings Coming Soon</div>} />
