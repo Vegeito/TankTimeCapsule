@@ -37,7 +37,7 @@ export const Navbar: React.FC<NavbarProps> = ({ toggleSidebar }) => {
               <Menu className="h-6 w-6" />
             </button>
             <Link to="/" className="ml-4 font-bold text-xl">
-              Tank Time Capsule
+              Shark Tank India Analytics
             </Link>
           </div>
 

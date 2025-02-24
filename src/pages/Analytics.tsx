@@ -73,20 +73,14 @@ export const Analytics: React.FC = () => {
   const avgValuation = deals.reduce((sum, deal) => sum + deal.valuation, 0) / deals.length;
   const successRate = (deals.filter(deal => deal.success_status === 'funded').length / deals.length) * 100;
 
-  interface SeasonalTrend {
-    season: string;
-    deals: number;
-    investment: number;
-  }
-
-  const seasonalTrends = deals.reduce((acc: SeasonalTrend[], deal) => {
-    const season = acc.find(s => s.season === deal.season.toString());
+  const seasonalTrends = deals.reduce((acc: any[], deal) => {
+    const season = acc.find(s => s.season === deal.season);
     if (season) {
       season.deals++;
       season.investment += deal.deal_amount;
     } else {
       acc.push({
-        season: deal.season.toString(),
+        season: deal.season,
         deals: 1,
         investment: deal.deal_amount,
       });

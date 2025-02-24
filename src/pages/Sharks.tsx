@@ -8,13 +8,7 @@ export const Sharks: React.FC = () => {
   const { sharks } = useDealsStore();
   const { isDarkMode } = useThemeStore();
 
-  interface Shark {
-    name: string;
-    total_deals: number;
-    total_investment: number;
-  }
-
-  const chartData = Object.values(sharks).map((shark: Shark) => ({
+  const chartData = Object.values(sharks).map((shark: any) => ({
     name: shark.name,
     deals: shark.total_deals,
     investment: shark.total_investment / 10000000, // Convert to Cr
@@ -41,7 +35,7 @@ export const Sharks: React.FC = () => {
             <span className="text-sm text-gray-500">Total Deals</span>
           </div>
           <div className="text-3xl font-bold">
-            {Object.values(sharks).reduce((acc: number, shark: Shark) => acc + shark.total_deals, 0)}
+            {Object.values(sharks).reduce((acc: number, shark: any) => acc + shark.total_deals, 0)}
           </div>
         </div>
 
@@ -53,7 +47,7 @@ export const Sharks: React.FC = () => {
             <span className="text-sm text-gray-500">Total Investment</span>
           </div>
           <div className="text-3xl font-bold">
-            ₹{(Object.values(sharks).reduce((acc: number, shark: Shark) => acc + shark.total_investment, 0) / 10000000).toFixed(1)}Cr
+            ₹{(Object.values(sharks).reduce((acc: number, shark: any) => acc + shark.total_investment, 0) / 10000000).toFixed(1)}Cr
           </div>
         </div>
       </div>
@@ -82,7 +76,7 @@ export const Sharks: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {Object.values(sharks).map((shark: Shark) => (
+        {Object.values(sharks).map((shark: any) => (
           <div key={shark.name} className={`p-6 rounded-lg ${
             isDarkMode ? 'bg-[#1E2A3B]' : 'bg-white'
           } shadow-lg`}>

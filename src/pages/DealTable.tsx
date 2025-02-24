@@ -47,9 +47,6 @@ export const DealTable: React.FC = () => {
   const industries = [...new Set(deals.map(deal => deal.industry))];
   const seasons = [...new Set(deals.map(deal => deal.season))];
 
-  
-
-
   const handleSort = (key: string) => {
     setSortConfig(prev => ({
       key,

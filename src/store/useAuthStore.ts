@@ -6,11 +6,11 @@ interface Profile {
   email: string;
   full_name: string | null;
   avatar_url: string | null;
-  preferences: Record<string, unknown>;
+  preferences: Record<string, any>;
 }
 
 interface AuthStore {
-  user: { id: string; email: string } | null;
+  user: any | null;
   profile: Profile | null;
   loading: boolean;
   error: string | null;
@@ -30,7 +30,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
   signIn: async (email: string, password: string) => {
     set({ loading: true, error: null });
     try {
-      const response = await api.post('/auth/login', { email, password });
+      const response = await api.post<{ user: any; profile: Profile }>('/auth/login', { email, password });
       const { user, profile } = response.data;
       set({ user, profile, error: null });
     } catch (error) {
@@ -44,7 +44,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
   signUp: async (email: string, password: string, fullName: string) => {
     set({ loading: true, error: null });
     try {
-      const response = await api.post('/auth/register', {
+      const response = await api.post<{ user: any; profile: Profile }>('/auth/register', {
         email,
         password,
         full_name: fullName,
@@ -71,7 +71,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
 
   fetchProfile: async () => {
     try {
-      const response = await api.get('/auth/profile');
+      const response = await api.get<{ user: any; profile: Profile }>('/auth/profile');
       const { user, profile } = response.data;
       set({ user, profile, error: null });
     } catch (error) {
@@ -82,7 +82,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
 
   updateProfile: async (updates: Partial<Profile>) => {
     try {
-      const response = await api.put('/auth/profile', updates);
+      const response = await api.put<{ profile: Profile }>('/auth/profile', updates);
       const { profile } = response.data;
       set({ profile, error: null });
     } catch (error) {

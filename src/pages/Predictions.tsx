@@ -5,7 +5,7 @@ import { Brain, TrendingUp, Target, AlertTriangle, ChevronRight, Award } from 'l
 
 export const Predictions: React.FC = () => {
   const { isDarkMode } = useThemeStore();
-  const [selectedIndustry, setSelectedIndustry] = useState('Technology');
+  const [selectedIndustry, setSelectedIndustry] = useState<Industry>('Technology');
   const [animatedPercentage, setAnimatedPercentage] = useState(0);
 
   const industries = [
@@ -17,16 +17,16 @@ export const Predictions: React.FC = () => {
     'Manufacturing',
   ];
 
-  type Prediction = {
+  type Industry = 'Technology' | 'Food & Beverage' | 'Healthcare' | 'E-commerce' | 'Education' | 'Manufacturing';
+
+  const predictions: Record<Industry, {
     success_rate: number;
     growth_potential: number;
     market_size: string;
     top_sharks: string[];
     risk_factors: string[];
     valuation_range: string;
-  };
-
-  const predictions: Record<string, Prediction> = React.useMemo(() => ({
+  }> = {
     Technology: {
       success_rate: 75,
       growth_potential: 85,
@@ -75,7 +75,7 @@ export const Predictions: React.FC = () => {
       risk_factors: ['Raw Material Costs', 'Production Scale', 'Supply Chain'],
       valuation_range: '₹2.5Cr - ₹9Cr',
     },
-  }), []);
+  };
 
   useEffect(() => {
     const targetPercentage = predictions[selectedIndustry].success_rate;
@@ -93,7 +93,7 @@ export const Predictions: React.FC = () => {
     }, 16);
 
     return () => clearInterval(timer);
-  }, [selectedIndustry, predictions]);
+  }, [selectedIndustry]);
 
   return (
     <div className="space-y-8">
@@ -120,7 +120,7 @@ export const Predictions: React.FC = () => {
             key={industry}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => setSelectedIndustry(industry)}
+            onClick={() => setSelectedIndustry(industry as Industry)}
             className={`px-4 py-2 rounded-lg whitespace-nowrap ${
               selectedIndustry === industry
                 ? isDarkMode
