@@ -22,6 +22,7 @@ export const SeasonSelector: React.FC = () => {
         <option value={1}>Season 1</option>
         <option value={2}>Season 2</option>
         <option value={3}>Season 3</option>
+        <option value={4}>Season 4</option>
       </select>
     </div>
   );

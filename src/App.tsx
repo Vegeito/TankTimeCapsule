@@ -10,6 +10,11 @@ import { DealTable } from './pages/DealTable';
 import { Predictions } from './pages/Predictions';
 import { Auth } from './pages/Auth';
 import { Profile } from './pages/Profile';
+import { Insights } from './pages/Insights';
+import { Trends } from './pages/Trends';
+import { Startups } from './pages/Startups';
+import { Industries } from './pages/Industries';
+import { Comparisons } from './pages/Comparisons';
 import { useThemeStore } from './store/useThemeStore';
 import { useDealsStore } from './store/useDealsStore';
 import { useAuthStore } from './store/useAuthStore';
@@ -47,6 +52,11 @@ function App() {
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/deal-table" element={<DealTable />} />
               <Route path="/predictions" element={<Predictions />} />
+              <Route path="/insights" element={<Insights />} />
+              <Route path="/trends" element={<Trends />} />
+              <Route path="/startups" element={<Startups />} />
+              <Route path="/industries" element={<Industries />} />
+              <Route path="/comparisons" element={<Comparisons />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/settings" element={<div>Settings Coming Soon</div>} />
