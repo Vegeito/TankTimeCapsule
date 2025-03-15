@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Mail, Lock, User, ArrowRight } from 'lucide-react';
+import { Mail, Lock, User, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { useAuthStore } from '../store/useAuthStore';
 import { useThemeStore } from '../store/useThemeStore';
 
@@ -9,6 +9,7 @@ export const Auth: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const { signIn, signUp, loading, error } = useAuthStore();
   const { isDarkMode } = useThemeStore();
   const navigate = useNavigate();
@@ -27,12 +28,13 @@ export const Auth: React.FC = () => {
     }
   };
 
+
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4">
-      <div className={`w-full max-w-md p-8 rounded-lg shadow-xl ${
-        isDarkMode ? 'bg-[#1E2A3B]' : 'bg-white'
-      }`}>
-        <h2 className="text-2xl font-bold mb-6 text-center">
+    <div className="h-screen flex items-center justify-center px-6 bg-gradient-to-br from-[#1E2A3B] to-[#5D87FF]">
+      <div className={`w-full max-w-md p-8 rounded-2xl shadow-xl transition-all duration-300 transform hover:scale-105 ${
+        isDarkMode ? 'bg-[#1E2A3B] text-white' : 'bg-white text-gray-900'
+      }`}> 
+        <h2 className="text-3xl font-bold mb-6 text-center">
           {isSignUp ? 'Create Account' : 'Welcome Back'}
         </h2>
 
@@ -46,11 +48,7 @@ export const Auth: React.FC = () => {
                   type="text"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className={`w-full pl-10 pr-4 py-2 rounded-lg ${
-                    isDarkMode
-                      ? 'bg-[#0D1B2A] border-[#17BEBB]'
-                      : 'bg-gray-50 border-[#5D87FF]'
-                  } border focus:ring-2 focus:ring-opacity-50`}
+                  className="w-full pl-10 pr-4 py-2 rounded-lg bg-gray-200 border border-gray-400 text-gray-900 focus:ring-2 focus:ring-blue-500"
                   placeholder="John Doe"
                   required
                 />
@@ -66,11 +64,7 @@ export const Auth: React.FC = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className={`w-full pl-10 pr-4 py-2 rounded-lg ${
-                  isDarkMode
-                    ? 'bg-[#0D1B2A] border-[#17BEBB]'
-                    : 'bg-gray-50 border-[#5D87FF]'
-                } border focus:ring-2 focus:ring-opacity-50`}
+                className="w-full pl-10 pr-4 py-2 rounded-lg bg-gray-200 border border-gray-400 text-gray-900 focus:ring-2 focus:ring-blue-500"
                 placeholder="you@example.com"
                 required
               />
@@ -82,22 +76,25 @@ export const Auth: React.FC = () => {
             <div className="relative">
               <Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className={`w-full pl-10 pr-4 py-2 rounded-lg ${
-                  isDarkMode
-                    ? 'bg-[#0D1B2A] border-[#17BEBB]'
-                    : 'bg-gray-50 border-[#5D87FF]'
-                } border focus:ring-2 focus:ring-opacity-50`}
+                className="w-full pl-10 pr-10 py-2 rounded-lg bg-gray-200 border border-gray-400 text-gray-900 focus:ring-2 focus:ring-blue-500"
                 placeholder="••••••••"
                 required
               />
+              <button
+                type="button"
+                className="absolute right-3 top-3 h-5 w-5 text-gray-400 hover:text-gray-600"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeOff /> : <Eye />}
+              </button>
             </div>
           </div>
 
           {error && (
-            <div className="text-red-500 text-sm mt-2">
+            <div className="text-red-500 text-sm mt-2 text-center">
               {error}
             </div>
           )}
@@ -105,11 +102,7 @@ export const Auth: React.FC = () => {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-3 rounded-lg font-semibold flex items-center justify-center ${
-              isDarkMode
-                ? 'bg-[#17BEBB] text-white hover:bg-opacity-90'
-                : 'bg-[#5D87FF] text-white hover:bg-opacity-90'
-            } transition-colors`}
+            className="w-full py-2 rounded-lg font-semibold flex items-center justify-center bg-blue-600 text-white hover:bg-blue-700 transition-colors shadow-lg"
           >
             {loading ? (
               <span>Loading...</span>
@@ -122,10 +115,10 @@ export const Auth: React.FC = () => {
           </button>
         </form>
 
-        <div className="mt-6 text-center">
+        <div className="mt-4 text-center">
           <button
             onClick={() => setIsSignUp(!isSignUp)}
-            className="text-sm hover:underline"
+            className="text-sm text-blue-300 hover:underline"
           >
             {isSignUp
               ? 'Already have an account? Sign in'
